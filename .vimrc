@@ -43,9 +43,9 @@ endfunction
 set number
 set foldmethod=indent
 
-" noremap <F5> :wa<CR>:tab terminal python3 %<CR>
-" noremap <S-F5> :wa<CR>:tab terminal python3 %
-" noremap <F6> :tab terminal python3 -m pydoc <C-r><C-a>
+noremap <F5> gg=G:wa<CR>:tab terminal python3 %<CR>
+noremap <S-F5> :wa<CR>:tab terminal python3 %
+noremap <F6> :tab terminal python3 -m pydoc <C-r><C-a>
 
 nnoremap ZZ :wqa<CR>
 nnoremap <silent> <C-l> :nohlsearch<CR><C-l> 
@@ -66,7 +66,7 @@ abbr slef self
 abbr sefl self
 abbr supre super
 
-set guifont=Consolas:h11
+set guifont=Inconsolata\ 12
 colorscheme desert
 
 " by default, the indent is 2 spaces. 
@@ -78,8 +78,8 @@ set mouse=a
 augroup keys1
 	autocmd!
 	" for .ino files
-	autocmd BufEnter *.py noremap <F5> :wa<CR>:tab terminal python %:p<CR>
-	autocmd BufEnter *.py noremap <S-F5> :wa<CR>:tab terminal python %:p 
+	autocmd BufEnter *.py noremap <F5> gg=G:wa<CR>:tab terminal ./venv/bin/python3 %:p<CR>
+	autocmd BufEnter *.py noremap <S-F5> :wa<CR>:tab terminal ./venv/bin/python3 %:p 
 
 	autocmd BufRead,BufNewFile text setlocal ts=4 sw=4 expandtab
 
@@ -88,7 +88,7 @@ augroup END
 augroup keys2
 	autocmd!
 
-	autocmd BufEnter *.sh noremap <F5> :wa<CR>:tab terminal %:p<CR>
+	autocmd BufEnter *.sh noremap <F5> gg=G:wa<CR>:tab terminal %:p<CR>
 	autocmd BufEnter *.sh noremap <S-F5> :wa<CR>:tab terminal %:p 
 
 	autocmd BufRead,BufNewFile text setlocal ts=4 sw=4 expandtab
@@ -96,22 +96,61 @@ augroup keys2
 augroup END
 
 set backup
-if !isdirectory($HOME."\\.vim")
-    silent! execute "!mkdir ~\\.vim\\"
+if !isdirectory($HOME."/.vim")
+	silent! execute "!mkdir ~/.vim/"
 endif
 
-if !isdirectory($HOME."\\.vim\\bkp")
-    silent! execute "!mkdir ~\\.vim\\bkp"
+if !isdirectory($HOME."/.vim/bkp")
+	silent! execute "!mkdir ~/.vim/bkp"
 endif
 
-if !isdirectory($HOME."\\.vim\\tmp")
-    silent! execute "!mkdir ~\\.vim\\tmp"
+if !isdirectory($HOME."/.vim/tmp")
+	silent! execute "!mkdir ~/.vim/tmp"
 endif
 
-if !isdirectory($HOME."\\.vim\\undo")
-    silent! execute "!mkdir ~\\.vim\\undo"
+if !isdirectory($HOME."/.vim/undo")
+	silent! execute "!mkdir ~/.vim/undo"
 endif
 
-set backupdir=$HOME\\.vim\\bkp
-set directory=$HOME\\.vim\\tmp
-set undodir=$HOME\\.vim\\undo
+set backupdir=$HOME/.vim/bkp
+set directory=$HOME/.vim/tmp
+set undodir=$HOME/.vim/undo
+
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+	silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin()
+
+Plug 'madox2/vim-ai'
+
+call plug#end()
+
+let s:vim_ai_endpoint_url = "http://localhost:11434/v1/completions"
+let s:vim_ai_model = "llama3.1:latest"
+let s:vim_ai_temperature = 0.1
+
+let s:vim_ai_complete = #{
+			\  engine: "complete",
+			\  options: #{
+			\    model: s:vim_ai_model,
+			\    temperature: s:vim_ai_temperature,
+			\    endpoint_url: s:vim_ai_endpoint_url,
+			\    enable_auth: 0,
+			\    max_tokens: 0,
+			\    request_timeout: 60,
+			\  },
+			\  ui: #{
+			\    paste_mode: 1,
+			\    open_chat_command: "preset_below",
+			\    scratch_buffer_keep_open: 0,
+			\    populate_options: 1,
+			\  },
+			\}
+
+"let g:vim_ai_chat = s:vim_ai_chat_config
+let g:vim_ai_complete = s:vim_ai_complete
+"let g:vim_ai_edit = s:vim_ai_edit_config
+
