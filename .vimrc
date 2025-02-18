@@ -43,7 +43,7 @@ endfunction
 set number
 set foldmethod=indent
 
-noremap <F5> gg=G:wa<CR>:tab terminal python3 %<CR>
+noremap <F5> :wa<CR>:tab terminal python3 %<CR>
 noremap <S-F5> :wa<CR>:tab terminal python3 %
 noremap <F6> :tab terminal python3 -m pydoc <C-r><C-a>
 
@@ -78,7 +78,7 @@ set mouse=a
 augroup keys1
 	autocmd!
 	" for .ino files
-	autocmd BufEnter *.py noremap <F5> gg=G:wa<CR>:tab terminal ./venv/bin/python3 %:p<CR>
+	autocmd BufEnter *.py noremap <F5> :wa<CR>:tab terminal ./venv/bin/python3 %:p<CR>
 	autocmd BufEnter *.py noremap <S-F5> :wa<CR>:tab terminal ./venv/bin/python3 %:p 
 
 	autocmd BufRead,BufNewFile text setlocal ts=4 sw=4 expandtab
@@ -88,7 +88,7 @@ augroup END
 augroup keys2
 	autocmd!
 
-	autocmd BufEnter *.sh noremap <F5> gg=G:wa<CR>:tab terminal %:p<CR>
+	autocmd BufEnter *.sh noremap <F5> :wa<CR>:tab terminal %:p<CR>
 	autocmd BufEnter *.sh noremap <S-F5> :wa<CR>:tab terminal %:p 
 
 	autocmd BufRead,BufNewFile text setlocal ts=4 sw=4 expandtab
