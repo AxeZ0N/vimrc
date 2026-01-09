@@ -76,7 +76,7 @@ augroup keys1
 	" for .ino files
 	autocmd BufEnter *.py noremap <F5> :wa<CR>:tab terminal ./venv/bin/python3 %:p<CR>
 	autocmd BufEnter *.py noremap <S-F5> :wa<CR>:tab terminal ./venv/bin/python3 %:p 
-	autocmd BufEnter *.py noremap <F6> :tab terminal .venv/bin/python3 -m pydoc <C-r><C-a>
+	autocmd BufEnter *.py noremap <F6> :tab terminal ./venv/bin/python3 -m pydoc <C-r><C-a>
 
 	autocmd BufRead,BufNewFile text setlocal ts=4 sw=4 expandtab
 
