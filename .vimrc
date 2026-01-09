@@ -43,10 +43,6 @@ endfunction
 set number
 set foldmethod=indent
 
-noremap <F5> :wa<CR>:tab terminal python3 %<CR>
-noremap <S-F5> :wa<CR>:tab terminal python3 %
-noremap <F6> :tab terminal python3 -m pydoc <C-r><C-a>
-
 nnoremap ZZ :wqa<CR>
 nnoremap <silent> <C-l> :nohlsearch<CR><C-l> 
 nnoremap <F2> :%s/<C-r><C-w>//g<Left><Left>
@@ -80,6 +76,9 @@ augroup keys1
 	" for .ino files
 	autocmd BufEnter *.py noremap <F5> :wa<CR>:tab terminal ./venv/bin/python3 %:p<CR>
 	autocmd BufEnter *.py noremap <S-F5> :wa<CR>:tab terminal ./venv/bin/python3 %:p 
+	autocmd BufEnter *.py noremap <F5> :wa<CR>:tab terminal python3 %<CR>
+	autocmd BufEnter *.py noremap <S-F5> :wa<CR>:tab terminal python3 %
+	autocmd BufEnter *.py noremap <F6> :tab terminal python3 -m pydoc <C-r><C-a>
 
 	autocmd BufRead,BufNewFile text setlocal ts=4 sw=4 expandtab
 
